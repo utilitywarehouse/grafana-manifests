@@ -50,63 +50,10 @@ data:
       editable: true
       options:
         path: /dashboards/repo/dashboards/dev
+
   datasources.yaml: |
     apiVersion: 1
     datasources:
-    - name: InfluxDB Kube-System
-      type: influxdb
-      access: proxy
-      url: http://monitoring-influxdb.kube-system:8086
-      database: k8s
-      basicAuth: false
-      isDefault: false
-      version: 1
-      editable: false
-    - name: OnPrem - InfluxDB - Applications
-      type: influxdb
-      access: proxy
-      url: https://influxdb-for-onprem.dev.uw.systems
-      database: apps
-      basicAuth: false
-      isDefault: false
-      version: 1
-      editable: false
-    - name: OnPrem - InfluxDB - Databases
-      type: influxdb
-      access: proxy
-      url: https://influxdb-for-onprem.dev.uw.systems
-      database: db
-      basicAuth: false
-      isDefault: false
-      version: 1
-      editable: false
-    - name: OnPrem - InfluxDB - Internal
-      type: influxdb
-      access: proxy
-      url: https://influxdb-for-onprem.dev.uw.systems
-      database: _internal
-      basicAuth: false
-      isDefault: false
-      version: 1
-      editable: false
-    - name: OnPrem - InfluxDB - Network
-      type: influxdb
-      access: proxy
-      url: https://influxdb-for-onprem.dev.uw.systems
-      database: network
-      basicAuth: false
-      isDefault: false
-      version: 1
-      editable: false
-    - name: OnPrem - InfluxDB - Servers
-      type: influxdb
-      access: proxy
-      url: https://influxdb-for-onprem.dev.uw.systems
-      database: servers
-      basicAuth: false
-      isDefault: false
-      version: 1
-      editable: false
     - name: Prometheus
       type: prometheus
       access: proxy
@@ -115,27 +62,7 @@ data:
       isDefault: true
       version: 1
       editable: false
-      jsonData:
-        timeInterval: "30s"
-    - name: Thanos
-      type: prometheus
-      access: proxy
-      url: http://thanos-query.sys-mon:9090
-      basicAuth: false
-      isDefault: false
-      version: 1
-      editable: false
-      jsonData:
-        timeInterval: "30s"
-    - name: GlobalThanos
-      type: prometheus
-      access: proxy
-      url: http://global-thanos-query.sys-mon:9090
-      basicAuth: false
-      isDefault: false
-      version: 1
-      editable: false
-      jsonData:
+      jsonData: 
         timeInterval: "30s"
 ---
 apiVersion: apps/v1
@@ -155,7 +82,7 @@ spec:
     spec:
       containers:
       - name: grafana
-        image: grafana/grafana:6.1.0
+        image: grafana/grafana:6.1.3
         imagePullPolicy: IfNotPresent
         env:
         - name: GF_SERVER_ROOT_URL
