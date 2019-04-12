@@ -1,0 +1,291 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: grafana
+spec:
+  rules:
+  - host: demo-grafana.com
+    http:
+      paths:
+      - backend:
+          serviceName: grafana
+          servicePort: 9080
+        path: /
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/path: /metrics
+    prometheus.io/port: "3000"
+    prometheus.io/scrape: "true"
+  labels:
+    name: grafana
+  name: grafana
+spec:
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10800
+  ports:
+  - name: grafana
+    port: 9080
+    protocol: TCP
+    targetPort: 9080
+  selector:
+    app: grafana
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana
+data:
+  dashboards.yaml: |
+    apiVersion: 1
+    providers:
+    - name: 'default'
+      folder: ''
+      type: file
+      disableDeletion: false
+      editable: true
+      options:
+        path: /dashboards/repo/dashboards/dev
+  datasources.yaml: |
+    apiVersion: 1
+    datasources:
+    - name: InfluxDB Kube-System
+      type: influxdb
+      access: proxy
+      url: http://monitoring-influxdb.kube-system:8086
+      database: k8s
+      basicAuth: false
+      isDefault: false
+      version: 1
+      editable: false
+    - name: OnPrem - InfluxDB - Applications
+      type: influxdb
+      access: proxy
+      url: https://influxdb-for-onprem.dev.uw.systems
+      database: apps
+      basicAuth: false
+      isDefault: false
+      version: 1
+      editable: false
+    - name: OnPrem - InfluxDB - Databases
+      type: influxdb
+      access: proxy
+      url: https://influxdb-for-onprem.dev.uw.systems
+      database: db
+      basicAuth: false
+      isDefault: false
+      version: 1
+      editable: false
+    - name: OnPrem - InfluxDB - Internal
+      type: influxdb
+      access: proxy
+      url: https://influxdb-for-onprem.dev.uw.systems
+      database: _internal
+      basicAuth: false
+      isDefault: false
+      version: 1
+      editable: false
+    - name: OnPrem - InfluxDB - Network
+      type: influxdb
+      access: proxy
+      url: https://influxdb-for-onprem.dev.uw.systems
+      database: network
+      basicAuth: false
+      isDefault: false
+      version: 1
+      editable: false
+    - name: OnPrem - InfluxDB - Servers
+      type: influxdb
+      access: proxy
+      url: https://influxdb-for-onprem.dev.uw.systems
+      database: servers
+      basicAuth: false
+      isDefault: false
+      version: 1
+      editable: false
+    - name: Prometheus
+      type: prometheus
+      access: proxy
+      url: http://thanos-query.sys-mon:9090
+      basicAuth: false
+      isDefault: true
+      version: 1
+      editable: false
+      jsonData:
+        timeInterval: "30s"
+    - name: Thanos
+      type: prometheus
+      access: proxy
+      url: http://thanos-query.sys-mon:9090
+      basicAuth: false
+      isDefault: false
+      version: 1
+      editable: false
+      jsonData:
+        timeInterval: "30s"
+    - name: GlobalThanos
+      type: prometheus
+      access: proxy
+      url: http://global-thanos-query.sys-mon:9090
+      basicAuth: false
+      isDefault: false
+      version: 1
+      editable: false
+      jsonData:
+        timeInterval: "30s"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+      name: grafana
+    spec:
+      containers:
+      - name: grafana
+        image: grafana/grafana:6.1.0
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: GF_SERVER_ROOT_URL
+          value: https://demo-grafana.com
+        - name: GF_PATHS_DATA
+          value: /data
+        - name: GF_PATHS_PLUGINS
+          value: /data/plugins
+        - name: GF_PATHS_PROVISIONING
+          value: /provisioning
+        - name: GF_SECURITY_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: admin-password
+              name: grafana-secrets
+        - name: GF_USERS_AUTO_ASSIGN_ORG_ROLE
+          value: Admin
+        - name: GF_USERS_ALLOW_SIGN_UP
+          value: "false"
+        - name: GF_USERS_ALLOW_ORG_CREATE
+          value: "false"
+        - name: GF_AUTH_DISABLE_LOGIN_FORM
+          value: "true"
+        - name: GF_AUTH_ANONYMOUS_ENABLED
+          value: "true"
+        - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+          value: "Admin"
+        - name: GF_ANALYTICS_REPORTING_ENABLED
+          value: "false"
+        - name: GF_ALERTING_ENABLED
+          value: "false"
+        - name: GF_SMTP_ENABLED
+          value: "false"
+        - name: GF_LOG_MODE
+          value: console
+        - name: GF_INSTALL_PLUGINS
+          value: grafana-piechart-panel,grafana-clock-panel
+        - name: GF_SERVER_ENABLE_GZIP
+          value: "true"
+        - name: GF_METRICS_ENABLED
+          value: "true"
+        - name: GF_EXPLORE_ENABLED
+          value: "true"
+        ports:
+        - containerPort: 3000
+          name: web
+          protocol: TCP
+        resources:
+          requests:
+            cpu: "0"
+            memory: 100Mi
+          limits:
+            memory: 1000Mi
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /api/health
+            port: web
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 15
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /api/health
+            port: web
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 10
+        volumeMounts:
+        - mountPath: /data
+          name: data
+        - mountPath: /provisioning
+          name: grafana
+        - mountPath: /dashboards
+          name: dashboards
+      - name: git-sync
+        image: gcr.io/google_containers/git-sync:v2.0.6
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: GIT_SYNC_REPO
+          value: "git@github.com:utilitywarehouse/grafana-dashboards.git"
+        - name: GIT_SYNC_DEST
+          value: "repo"
+        - name: GIT_SYNC_SSH
+          value: "true"
+        - name: GIT_SYNC_ROOT
+          value: "/dashboards"
+        - name: GIT_SYNC_MAX_SYNC_FAILURES
+          value: "5"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            memory: 300Mi
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+        - mountPath: /etc/git-secret
+          name: git-ssh-key
+        - mountPath: /dashboards
+          name: dashboards
+      volumes:
+      - emptyDir: {}
+        name: data
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: dashboards.yaml
+            path: dashboards/dashboards.yaml
+          - key: datasources.yaml
+            path: datasources/datasources.yaml
+          name: grafana
+        name: grafana
+      - emptyDir: {}
+        name: dashboards
+      - name: git-ssh-key
+        secret:
+          defaultMode: 420
+          items:
+          - key: git-ssh-key
+            mode: 256
+            path: ssh
+          - key: known_hosts
+            mode: 0400
+            path: known_hosts
+          secretName: grafana-secrets
+---
