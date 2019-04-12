@@ -3,23 +3,22 @@
 Grafana manifests used for Kustomize.
 
 `/base` contains base Grafana configuration
-`/dev-aws` contains configuration specific for aws dev.
+`/example` contains example how to use the manifests.
 
 ```
 tree
 .
-??? LICENSE
-??? README.md
-??? base
-?ÊÊ ??? grafana.yaml
-?ÊÊ ??? kustomization.yaml
-?ÊÊ ??? secrets.yaml
-??? dev-aws
-?ÊÊ ??? grafana.yaml
-?ÊÊ ??? kustomization.yaml
-??? dev-gcp
+¿¿¿ LICENSE
+¿¿¿ README.md
+¿¿¿ base
+¿   ¿¿¿ grafana.yaml
+¿   ¿¿¿ kustomization.yaml
+¿   ¿¿¿ secrets.yaml
+¿¿¿ example
+    ¿¿¿ grafana.yaml
+    ¿¿¿ kustomization.yaml
 
-3 directories, 7 files
+2 directories, 7 files
 ```
 
 ## Example
