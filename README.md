@@ -7,15 +7,17 @@ Grafana manifests used for Kustomize.
 
 ```
 .
-¿¿¿ base
-¿   ¿¿¿ grafana.yaml
-¿   ¿¿¿ kustomization.yaml
-¿   ¿¿¿ secrets.yaml
-¿¿¿ example
-¿   ¿¿¿ grafana.yaml
-¿   ¿¿¿ kustomization.yaml
-¿¿¿ LICENSE
-¿¿¿ README.md
+â”œâ”€â”€ base
+â”‚Â Â  â”œâ”€â”€ grafana.yaml
+â”‚Â Â  â”œâ”€â”€ kustomization.yaml
+â”‚Â Â  â””â”€â”€ secrets.yaml
+â”œâ”€â”€ example
+â”‚Â Â  â”œâ”€â”€ grafana.yaml
+â”‚Â Â  â””â”€â”€ kustomization.yaml
+â”œâ”€â”€ LICENSE
+â””â”€â”€ README.md
+
+2 directories, 7 files
 ```
 
 ## Example
