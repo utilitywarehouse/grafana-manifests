@@ -6,19 +6,16 @@ Grafana manifests used for Kustomize.
 `/example` contains example how to use the manifests.
 
 ```
-tree
 .
-¿¿¿ LICENSE
-¿¿¿ README.md
 ¿¿¿ base
 ¿   ¿¿¿ grafana.yaml
 ¿   ¿¿¿ kustomization.yaml
 ¿   ¿¿¿ secrets.yaml
 ¿¿¿ example
-    ¿¿¿ grafana.yaml
-    ¿¿¿ kustomization.yaml
-
-2 directories, 7 files
+¿   ¿¿¿ grafana.yaml
+¿   ¿¿¿ kustomization.yaml
+¿¿¿ LICENSE
+¿¿¿ README.md
 ```
 
 ## Example
