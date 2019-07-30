@@ -4,4 +4,3 @@ commonLabels:
   service: monitoring
 resources:
 - grafana.yaml
-- secrets.yaml
