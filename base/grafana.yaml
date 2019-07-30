@@ -36,36 +36,6 @@ spec:
   selector:
     app: grafana
 ---
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: grafana
-data:
-  dashboards.yaml: |
-    apiVersion: 1
-    providers:
-    - name: 'default'
-      folder: ''
-      type: file
-      disableDeletion: false
-      editable: true
-      options:
-        path: /dashboards/repo/dashboards/dev
-
-  datasources.yaml: |
-    apiVersion: 1
-    datasources:
-    - name: Prometheus
-      type: prometheus
-      access: proxy
-      url: http://thanos-query.sys-mon:9090
-      basicAuth: false
-      isDefault: true
-      version: 1
-      editable: false
-      jsonData: 
-        timeInterval: "30s"
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:

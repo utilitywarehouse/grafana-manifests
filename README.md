@@ -9,25 +9,33 @@ Grafana manifests used for Kustomize.
 .
 ├── base
 │   ├── grafana.yaml
-│   ├── kustomization.yaml
-│   └── secrets.yaml
+│   └── kustomization.yaml
+├── CODEOWNERS
 ├── example
 │   ├── grafana.yaml
-│   └── kustomization.yaml
+│   ├── kustomization.yaml
+│   ├── resources
+│   │   ├── dashboards.yaml
+│   │   └── datasources.yaml
+│   └── secrets
+│       ├── grafana-admin-password
+│       ├── grafana-git-ssh-key
+│       ├── grafana-google-auth-client-secret
+│       └── grafana-known_hosts
 ├── LICENSE
 └── README.md
 
-2 directories, 7 files
+4 directories, 13 files
 ```
 
 ## Example
 
-Check out `kustomization.yaml` in `dev-aws` directory. 
+Check out `kustomization.yaml` in `example/` directory.
 
 You can build example with:
 
 ```
-kustomize build dev-aws
+kustomize build example/
 ```
 
 ## Requires
