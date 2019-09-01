@@ -3,4 +3,4 @@ kind: Kustomization
 commonLabels:
   service: monitoring
 resources:
-- grafana.yaml
+  - grafana.yaml
