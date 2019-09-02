@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 bases:
   - ../base/
-#  - github.com/utilitywarehouse/grafana-manifests/base?ref=v1.0.1
+#  - github.com/utilitywarehouse/grafana-manifests/base?ref=v1.0.10
 patchesStrategicMerge:
   - grafana.yaml
 configMapGenerator:
