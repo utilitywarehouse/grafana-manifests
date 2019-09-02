@@ -54,7 +54,6 @@ spec:
       containers:
         - name: grafana
           image: grafana/grafana:6.3.4
-          imagePullPolicy: IfNotPresent
           env:
             - name: GF_SERVER_ROOT_URL
               value: https://demo-grafana.com
@@ -135,8 +134,7 @@ spec:
             - mountPath: /dashboards
               name: dashboards
         - name: git-sync
-          image: gcr.io/google_containers/git-sync:v2.0.6
-          imagePullPolicy: IfNotPresent
+          image: k8s.gcr.io/git-sync:v3.1.2
           env:
             - name: GIT_SYNC_REPO
               value: "git@github.com:utilitywarehouse/grafana-dashboards.git"
@@ -155,7 +153,8 @@ spec:
             limits:
               memory: 300Mi
           securityContext:
-            runAsUser: 0
+            runAsUser: 65533 # git-sync user
+            runAsGroup: 0    # root group to read mounted Secrets
           volumeMounts:
             - mountPath: /etc/git-secret
               name: git-ssh-key
@@ -177,12 +176,10 @@ spec:
           name: dashboards
         - name: git-ssh-key
           secret:
-            defaultMode: 420
+            defaultMode: 0440
             items:
               - key: git-ssh-key
-                mode: 256
                 path: ssh
               - key: known_hosts
-                mode: 0400
                 path: known_hosts
             secretName: grafana-secrets
