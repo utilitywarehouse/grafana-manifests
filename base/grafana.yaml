@@ -81,7 +81,7 @@ spec:
             - name: GF_AUTH_ANONYMOUS_ENABLED
               value: "true"
             - name: GF_AUTH_ANONYMOUS_ORG_ROLE
-              value: "Admin"
+              value: "Viewer"
             - name: GF_ANALYTICS_REPORTING_ENABLED
               value: "false"
             - name: GF_ALERTING_ENABLED
