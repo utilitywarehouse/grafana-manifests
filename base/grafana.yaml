@@ -183,6 +183,3 @@ spec:
               - key: known_hosts
                 path: known_hosts
             secretName: grafana-secrets
-        - name: grafana-google-auth
-          secret:
-            secretName: grafana-google-auth
