@@ -2,9 +2,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 bases:
   - ../base/
-#  - github.com/utilitywarehouse/grafana-manifests/base?ref=v1.0.10
+#  - github.com/utilitywarehouse/grafana-manifests/base?ref=v1.0.11
 patchesStrategicMerge:
   - grafana.yaml
+  - grafana-google-auth.yaml
 configMapGenerator:
   - name: grafana
     files:
@@ -16,5 +17,8 @@ secretGenerator:
     files:
       - admin-password=secrets/grafana-admin-password
       - git-ssh-key=secrets/grafana-git-ssh-key
-      - google-auth-client-secret=secrets/grafana-google-auth-client-secret
       - known_hosts=secrets/grafana-known_hosts
+  - name: grafana-google-auth
+    type: Opaque
+    files:
+      - google-auth-client-secret=secrets/grafana-google-auth-client-secret
