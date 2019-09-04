@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 bases:
   - ../base/
-#  - github.com/utilitywarehouse/grafana-manifests/base?ref=v1.0.10
+#  - github.com/utilitywarehouse/grafana-manifests/base?ref=v1.0.11
 patchesStrategicMerge:
   - grafana.yaml
   - grafana-google-auth.yaml
