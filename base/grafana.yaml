@@ -65,6 +65,8 @@ spec:
               value: /data/plugins
             - name: GF_PATHS_PROVISIONING
               value: /provisioning
+            - name: GF_SECURITY_ALLOW_EMBEDDING
+              value: "true"
             - name: GF_SECURITY_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
