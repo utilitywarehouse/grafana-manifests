@@ -3,6 +3,8 @@ kind: Kustomization
 bases:
   - ../base/
 #  - github.com/utilitywarehouse/grafana-manifests/base?ref=v1.0.11
+resources:
+  - grafana-ingress.yaml
 patchesStrategicMerge:
   - grafana.yaml
   - grafana-google-auth.yaml
