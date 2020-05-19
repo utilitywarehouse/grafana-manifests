@@ -41,7 +41,7 @@ spec:
         fsGroup: 65533 # to make SSH key readable
       containers:
         - name: grafana
-          image: grafana/grafana:6.7.0
+          image: grafana/grafana:7.0.0
           env:
             - name: GF_SERVER_ROOT_URL
               value: https://demo-grafana.com
