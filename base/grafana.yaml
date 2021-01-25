@@ -122,7 +122,7 @@ spec:
             - mountPath: /dashboards
               name: dashboards
         - name: git-sync
-          image: k8s.gcr.io/git-sync:v3.2.2
+          image: k8s.gcr.io/git-sync/git-sync:v3.2.2
           env:
             - name: GIT_SYNC_REPO
               value: "git@github.com:utilitywarehouse/grafana-dashboards.git"
@@ -145,6 +145,7 @@ spec:
               memory: 300Mi
           securityContext:
             runAsUser: 65533 # git-sync user
+            runAsGroup: 0 # root group to read mounted Secrets
           volumeMounts:
             - mountPath: /etc/git-secret
               name: git-ssh-key
