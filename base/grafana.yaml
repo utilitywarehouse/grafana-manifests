@@ -122,7 +122,7 @@ spec:
             - mountPath: /dashboards
               name: dashboards
         - name: git-sync
-          image: k8s.gcr.io/git-sync:v3.1.6
+          image: k8s.gcr.io/git-sync:v3.2.2
           env:
             - name: GIT_SYNC_REPO
               value: "git@github.com:utilitywarehouse/grafana-dashboards.git"
@@ -134,11 +134,14 @@ spec:
               value: "/dashboards"
             - name: GIT_SYNC_MAX_SYNC_FAILURES
               value: "5"
+            - name: GIT_SYNC_WAIT
+              value: "30"
           resources:
             requests:
               cpu: 100m
               memory: 100Mi
             limits:
+              cpu: 1000m
               memory: 300Mi
           securityContext:
             runAsUser: 65533 # git-sync user
