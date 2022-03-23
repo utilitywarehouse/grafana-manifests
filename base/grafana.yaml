@@ -41,7 +41,7 @@ spec:
         fsGroup: 65533 # to make SSH key readable
       containers:
         - name: grafana
-          image: grafana/grafana:8.2.1
+          image: grafana/grafana:8.4.4
           env:
             - name: GF_SERVER_ROOT_URL
               value: https://demo-grafana.com
@@ -122,7 +122,7 @@ spec:
             - mountPath: /dashboards
               name: dashboards
         - name: git-sync
-          image: k8s.gcr.io/git-sync/git-sync:v3.3.4
+          image: k8s.gcr.io/git-sync/git-sync:v3.5.0
           env:
             - name: GIT_SYNC_REPO
               value: "git@github.com:utilitywarehouse/grafana-dashboards.git"
