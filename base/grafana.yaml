@@ -122,20 +122,20 @@ spec:
             - mountPath: /dashboards
               name: dashboards
         - name: git-sync
-          image: registry.k8s.io/git-sync/git-sync:v3.6.5
+          image: registry.k8s.io/git-sync/git-sync:v4.0.0
           env:
-            - name: GIT_SYNC_REPO
+            - name: GITSYNC_REPO
               value: "git@github.com:utilitywarehouse/grafana-dashboards.git"
-            - name: GIT_SYNC_DEST
+            - name: GITSYNC_LINK
               value: "repo"
-            - name: GIT_SYNC_SSH
+            - name: GITSYNC_SSH
               value: "true"
-            - name: GIT_SYNC_ROOT
+            - name: GITSYNC_ROOT
               value: "/dashboards"
-            - name: GIT_SYNC_MAX_SYNC_FAILURES
+            - name: GITSYNC_MAX_FAILURES
               value: "5"
-            - name: GIT_SYNC_WAIT
-              value: "30"
+            - name: GITSYNC_PERIOD
+              value: "30s"
           resources:
             requests:
               cpu: 100m
