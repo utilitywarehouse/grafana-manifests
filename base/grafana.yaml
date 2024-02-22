@@ -122,7 +122,7 @@ spec:
             - mountPath: /dashboards
               name: dashboards
         - name: git-sync
-          image: registry.k8s.io/git-sync/git-sync:v4.0.0
+          image: registry.k8s.io/git-sync/git-sync:v4.2.1
           env:
             - name: GITSYNC_REPO
               value: "git@github.com:utilitywarehouse/grafana-dashboards.git"
