@@ -45,45 +45,26 @@ spec:
           env:
             - name: GF_SERVER_ROOT_URL
               value: https://demo-grafana.com
+            - name: GF_SERVER_ENABLE_GZIP
+              value: "true"
             - name: GF_PATHS_DATA
               value: /data
             - name: GF_PATHS_PLUGINS
               value: /data/plugins
             - name: GF_PATHS_PROVISIONING
               value: /provisioning
-            - name: GF_SECURITY_ALLOW_EMBEDDING
-              value: "true"
-            - name: GF_SECURITY_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: admin-password
-                  name: grafana-secrets
-            - name: GF_USERS_AUTO_ASSIGN_ORG_ROLE
-              value: "Admin"
-            - name: GF_USERS_ALLOW_SIGN_UP
-              value: "false"
-            - name: GF_USERS_ALLOW_ORG_CREATE
-              value: "false"
-            - name: GF_AUTH_DISABLE_LOGIN_FORM
-              value: "true"
-            - name: GF_AUTH_ANONYMOUS_ENABLED
-              value: "true"
             - name: GF_ANALYTICS_REPORTING_ENABLED
-              value: "false"
-            - name: GF_ALERTING_ENABLED
-              value: "false"
-            - name: GF_SMTP_ENABLED
               value: "false"
             - name: GF_LOG_MODE
               value: console
+            - name: GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION
+              value: "true"
+            - name: GF_AUTH_DISABLE_LOGIN_FORM
+              value: "true"
+            - name: GF_USERS_AUTO_ASSIGN_ORG_ROLE
+              value: "Editor"
             - name: GF_INSTALL_PLUGINS
               value: grafana-piechart-panel,grafana-clock-panel
-            - name: GF_SERVER_ENABLE_GZIP
-              value: "true"
-            - name: GF_METRICS_ENABLED
-              value: "true"
-            - name: GF_EXPLORE_ENABLED
-              value: "true"
           ports:
             - containerPort: 3000
               name: web
