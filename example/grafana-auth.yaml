@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+spec:
+  template:
+    spec:
+      containers:
+        - name: grafana
+          env:
+              # https://grafana.com/docs/grafana/latest/setup-grafana/configure-security/configure-authentication/okta/#configuration-options
+            - name: GF_AUTH_OKTA_ENABLED
+              value: "true"
+            - name: GF_AUTH_OKTA_CLIENT_ID
+              value: my-client-id
+            - name: GF_AUTH_OKTA_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-secrets
+                  key: okta-client-secret
+            - name: GF_AUTH_OKTA_AUTH_URL
+              value: https://login.uw.systems/oauth2/v1/authorize
+            - name: GF_AUTH_OKTA_TOKEN_URL
+              value: https://login.uw.systems/oauth2/v1/token
+            - name: GF_AUTH_OKTA_API_URL
+              value: https://login.uw.systems/oauth2/v1/userinfo
+            - name: GF_AUTH_OKTA_SCOPES
+              value: openid profile email offline_access groups
+            - name: GF_AUTH_OKTA_AUTO_LOGIN
+              value: "true"
+            - name: GF_AUTH_OKTA_USE_REFRESH_TOKEN
+              value: "true"

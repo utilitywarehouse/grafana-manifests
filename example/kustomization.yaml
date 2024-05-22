@@ -6,8 +6,8 @@ bases:
 resources:
   - grafana-ingress.yaml
 patchesStrategicMerge:
+  - grafana-auth.yaml
   - grafana.yaml
-  - grafana-google-auth.yaml
 configMapGenerator:
   - name: grafana
     files:
@@ -19,7 +19,4 @@ secretGenerator:
     files:
       - git-ssh-key=secrets/grafana-git-ssh-key
       - known_hosts=secrets/grafana-known_hosts
-  - name: grafana-google-auth
-    type: Opaque
-    files:
-      - google-auth-client-secret=secrets/grafana-google-auth-client-secret
+      - okta-client-secret=secrets/grafana-okta-client-secret
