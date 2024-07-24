@@ -141,6 +141,8 @@ spec:
                 path: dashboards/dashboards.yaml
               - key: datasources.yaml
                 path: datasources/datasources.yaml
+              - key: policies.yaml
+                path: alerting/policies.yaml
             name: grafana
           name: grafana
         - emptyDir: {}
