@@ -64,8 +64,13 @@ spec:
               value: "true"
             - name: GF_USERS_AUTO_ASSIGN_ORG_ROLE
               value: "Editor"
+            # Pins must match the plugin versions bundled with the grafana
+            # image; update them when the image is upgraded. Without the pins
+            # the background installer tries to update the bundled plugins in
+            # the read-only image path and kills them:
+            # https://github.com/grafana/grafana/issues/123110
             - name: GF_PLUGINS_PREINSTALL
-              value: grafana-piechart-panel,grafana-clock-panel
+              value: grafana-piechart-panel,grafana-clock-panel,elasticsearch@12.6.4,zipkin@12.4.3
           ports:
             - containerPort: 3000
               name: web
