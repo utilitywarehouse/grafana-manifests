@@ -42,7 +42,7 @@ spec:
         fsGroup: 65533 # to make SSH key readable
       containers:
         - name: grafana
-          image: grafana/grafana:13.1.0
+          image: grafana/grafana:12.4.1
           env:
             - name: GF_SERVER_ROOT_URL
               value: https://demo-grafana.com
@@ -69,8 +69,8 @@ spec:
             # the background installer tries to update the bundled plugins in
             # the read-only image path and kills them:
             # https://github.com/grafana/grafana/issues/123110
-            - name: GF_PLUGINS_PREINSTALL
-              value: grafana-piechart-panel,grafana-clock-panel,elasticsearch@12.6.4,zipkin@12.4.3
+            - name: GF_INSTALL_PLUGINS
+              value: grafana-piechart-panel,grafana-clock-panel
           ports:
             - containerPort: 3000
               name: web
